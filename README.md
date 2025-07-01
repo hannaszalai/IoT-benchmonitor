@@ -1,12 +1,12 @@
-# Lake Balaton Bench Comfort Logger
+# Lake Balaton Bench Logger
 *“Find the best benches to relax by the lake!”*
 ![Lake Balaton Bench](assets/images/header.png)
 
 ---
 
-## 1. Idea Overview  
+## Overview  
 Each summer, thousands of people circle Lake Balaton by bike or foot, seeking the perfect place to rest. But what makes a bench perfect? Is it the view, the temperature, the breeze, or the warm sun on your back?  
-A small IoT device was placed under one of Balaton’s most iconic benches to find out. It senses when people sit, how warm and humid it is, and how much sun hits the bench. It even lets passersby vote: “Nice Spot!” or “Too hot!” All the data flows into a colorful website, complete with real-time comfort ratings, weather alerts, and QR codes for each bench.  
+A small IoT device was placed under one of Balaton’s most iconic benches to find out. It senses when people sit, how warm and humid it is, and how much sun hits the bench. It even lets passersby select their score from 1-5 stars which adds to the total score. All the data flows into a colorful website, complete with real-time comfort ratings, weather alerts, and history graphs.  
 Think of it as TripAdvisor for benches.
 
 What problem does it solve?  
@@ -15,14 +15,21 @@ What data is collected, and how is it used?
 
 ---
 
-## 2. Sensors and Components Used  
+## Sensors and Components Used  
 | Component | Purpose |
 |----------|---------|
-| [Sensor 1] | [Function] |
-| [Sensor 2] | [Function] |
-| [Actuator/Button] | [Function] |
-| [Microcontroller] | [Type used] |
-| [Display or extras] | [Optional] |
+| Raspberry Pi Pico WH | [Function] |
+| Breadboard | [Function] |
+| USB cable | [Function] |
+| Lab cable M/M, F/M | [Type used] |
+| Digital temperature and humidity sensor DHT11 | [Optional] |
+| TLV49645 SIP-3 Hall effect sensor digital | [Optional] |
+| MCP9700 TO-92 Temperature sensor | [Optional] |
+| Photoresistor CdS 4-7 kohm | [Optional] |
+| LEDs | [Optional] |
+| Carbon film resistors | [Optional] |
+| Magnet Neo35 Ø5mm x 5mm | [Optional] |
+| Tactile switch PCB 6x6x5mm black | [Optional] |
 
 ---
 
