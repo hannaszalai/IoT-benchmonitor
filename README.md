@@ -18,7 +18,7 @@
 [Useful Links](#useful-links)
 
 <div align="center">
-<img src="assets/images/header.png" alt="Lake Balaton Bench" width="400">
+<img src="assets/images/header.png" alt="Lake Balaton Bench" width="500">
 </div>
 
 ## Author
@@ -39,7 +39,7 @@ All this data flows into a colorful online dashboard, showing:
 Think of it as TripAdvisor for benches.
 
 <div align="center">
-<img src="assets/images/map.png" alt="Map" width="300">
+<img src="assets/images/map.png" alt="Map" width="400">
 </div>
 
 
@@ -192,29 +192,27 @@ total_score += stars
 avg_score = round(total_score / total_reviews, 2)
 ```
 
-## Transmitting Data
-Explain how data moves through the system:
+## Transmitting Data TODO: activity diagram
+- The Raspberry Pi Pico W reads all sensors and user inputs, then transmits data **every 2 seconds** over WiFi (2.4 GHz) to a local InfluxDB server.
+- It uses the built-in HTTP POST (via urequests), sending data in InfluxDB’s line protocol format like:
 
-- How often data is collected (e.g., every 3 seconds)  
-- Where it is stored (e.g., database, server)  
-- What triggers data transmission  
-- Optional automation (e.g., push notifications)
-
+``` python
+bench_data dht_temp=25.6,dht_hum=48,feels_like=26.9,rain=0,sun_score=0.3,sitting=1,avg_score=4.2,total_reviews=5
+```
+- Data is sent directly to the InfluxDB HTTP API running in Docker on your local network.
+- From there, it’s queried by your Flask server and visualized live in the browser with Chart.js.
+- LoRa or MQTT weren’t needed since the benches stay close to local WiFi, and I didn't have additional hardware to support anything besides WiFi.
 
 ## Data Storage and Visualization  
 ### Storage  
-- InfluxDB running in Docker (docker-compose.yml includes influxdb, telegraf, grafana).
+- Data is saved in InfluxDB on each send (every 2s) and kept for full history.
+- Influx was chosen for time-series data, and the Pico automates everything by pushing readings in a loop.
 
 ### Visualization  
-- Grafana dashboards display:
-    - Current comfort
-    - Past 24h trends
-    - Star ratings over time
-- Embedded in a simple static HTML page.
+- The dashboard is a simple HTML page with Chart.js that updates every 2 seconds from Flask+InfluxDB.
 
-# The Code
-
-## File Structure
+## The Code
+### File Structure
 ```
 IoT-benchmonitor/
 ├── README.md
@@ -245,15 +243,14 @@ IoT-benchmonitor/
         └── ...               # Other documentation images
 ```
 
-## Development Phases  
+### Development Phases  
 Outline the project in phases:
 
 1. Phase 1 – Terminal output (basic testing)  
 ![alt text](assets/images/terminal-print.png)
 3. Phase 2 – Custom website with graphs and live data
-![alt text](assets\images\frontend.png)
+![alt text](assets/images/frontend.png)
 
 
-## 8. Useful Links  
-- GitHub repo: https://github.com/hannaszalai/IoT-benchmonitor  
-- Demo Youtube video: `[YouTube link]`
+## Demo Video 
+TODO: youtube video here
