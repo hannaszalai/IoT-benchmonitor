@@ -1,5 +1,5 @@
 <div align="center">
-<img src="assets/images/readme-title.png" alt="Lake Balaton Bench Logger" width="250">
+<img src="assets/images/readme-title.png" alt="Lake Balaton Bench Logger" width="350">
 </div>
 
 ## Table of Content

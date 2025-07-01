@@ -1,3 +1,7 @@
+let previousBenchState = null;
+const charts = {};  // stores chart instances by canvas ID
+
+
 async function fetchData() {
   const response = await fetch('/data');
   return await response.json();
@@ -5,23 +9,46 @@ async function fetchData() {
 
 function drawChart(id, label, data, color) {
   const ctx = document.getElementById(id).getContext('2d');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.map(p => new Date(p.time).toLocaleTimeString()),
-      datasets: [{
-        label: label,
-        data: data.map(p => p.value),
-        borderColor: color,
-        fill: false,
-        tension: 0.1
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: { x: { display: true }, y: { beginAtZero: true } }
-    }
-  });
+
+  if (!charts[id]) {
+    // Create once
+    charts[id] = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.map(p => new Date(p.time).toLocaleTimeString()),
+        datasets: [{
+          label: label,
+          data: data.map(p => p.value),
+          borderColor: color,
+          fill: false,
+          tension: 0.4,
+          pointRadius: 3,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            ticks: { autoSkip: true, maxTicksLimit: 5 }
+          },
+          y: { beginAtZero: true }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`
+            }
+          }
+        }
+      }
+    });
+  } else {
+    // Update data in place
+    charts[id].data.labels = data.map(p => new Date(p.time).toLocaleTimeString());
+    charts[id].data.datasets[0].data = data.map(p => p.value);
+    charts[id].update();
+  }
 }
 
 let sunStateChartInstance;
@@ -68,6 +95,7 @@ async function render() {
   drawChart('feelsChart', 'Feels Like (°C)', feels, 'orange');
 
   const latestSit = sitting.length > 0 ? sitting.at(-1).value : 0;
+  const latestSitState = (latestSit === 1 || latestSit === true) ? 1 : 0;
   const latestRain = rain.at(-1)?.value;
   const latestSun = sun.at(-1)?.value;
   const latestAvgScore = avg_scores.length > 0 ? avg_scores.at(-1).value : null;
@@ -77,7 +105,7 @@ async function render() {
   const reviewStatus = document.getElementById('reviewStatus');
 
 
-  if (latestSit === 1 || latestSit === true) {
+  if (latestSit === 1) {
     benchCard.textContent = 'Bench is taken';
     benchCard.classList.add('bench-taken');
     benchCard.classList.remove('bench-free');
@@ -86,6 +114,13 @@ async function render() {
     benchCard.classList.add('bench-free');
     benchCard.classList.remove('bench-taken');
   }
+
+  if (previousBenchState !== null && previousBenchState !== latestSitState) {
+      console.log("Bench state changed! Reloading page...");
+      location.reload();
+  }
+  previousBenchState = latestSitState;
+
 
   document.getElementById('rainChance').textContent = 
     latestRain === 1 ? 'Rain chance is high – bring an umbrella!' : 'Rain chance is low';
