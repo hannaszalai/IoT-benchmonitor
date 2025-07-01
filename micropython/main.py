@@ -5,14 +5,24 @@ import influxSender
 import wifiConnection
 
 
+# ------------------------------------------------------
+# WiFi connection
+# ------------------------------------------------------
+
 wifi_ip = wifiConnection.connect()
 print("Pico IP:", wifi_ip)
 
 
+# ------------------------------------------------------
+# Sensor & device setup
+# ------------------------------------------------------
+
 # --- ADC setup for light sensors ---
 adc_sun = machine.ADC(0)   # GP26
 adc_shade = machine.ADC(1) # GP27
-adc_mcp = machine.ADC(2)   # GP28 = MCP9700 analog temp
+adc_mcp = machine.ADC(2)   # GP28
+
+# LEDs for sunlight indication
 led_green = machine.Pin(10, machine.Pin.OUT)
 led_yellow = machine.Pin(9, machine.Pin.OUT)
 led_red = machine.Pin(8, machine.Pin.OUT)
@@ -30,6 +40,11 @@ led_bench_red = machine.Pin(7, machine.Pin.OUT)
 button_pins = [11, 12, 13, 14, 15]
 buttons = [machine.Pin(pin, machine.Pin.IN, machine.Pin.PULL_UP) for pin in button_pins]
 
+
+# ------------------------------------------------------
+# Constants & global state
+# ------------------------------------------------------
+
 total_reviews = 0
 total_score = 0
 avg_score = 0
@@ -41,6 +56,11 @@ MCP9700_TCOEFF = 0.01  # 10mV per °C
 
 # Store previous temperature for rain detection
 last_dht_temp = None
+
+
+# ------------------------------------------------------
+# Helper functions
+# ------------------------------------------------------
 
 # Convert ADC to voltage
 def read_voltage(adc):
@@ -67,6 +87,10 @@ def compute_heat_index(temp_c, humidity):
     return round((HI - 32) * 5 / 9, 1)
 
 
+# ------------------------------------------------------
+# Main loop
+# ------------------------------------------------------
+
 while True:
     try:
         # --- Read light sensor voltages ---
@@ -88,10 +112,10 @@ while True:
                 rain_chance = "Unknown"
         last_dht_temp = dht_temp
 
-        # MCP9700 reading (in sun)
+        # --- MCP9700 reading (in direct sunlight) ---
         mcp_temp = read_mcp9700_temp()
 
-        # Feels-like approximation
+        # --- Feels-like calculation ---
         feels_like = compute_heat_index(dht_temp, dht_hum)
 
         # --- Read Hall sensor (sitting detection) ---
@@ -120,7 +144,7 @@ while True:
         shade_voltage = read_voltage(adc_shade)
         sun_score = round(sun_voltage - shade_voltage, 2)
 
-        # --- Determine which LED to light ---
+        # --- LED s for sunlight indication ---
         if sun_score < 0.2:
             led_green.value(1)
             led_yellow.value(0)
@@ -159,7 +183,12 @@ while True:
     except Exception as e:
         print("Error:", e)
 
-    influxSender.send_sensor_data(dht_temp, dht_hum, feels_like, rain_chance, sun_score, sitting, avg_score, total_reviews)
-
+    # --- Send data to InfluxDB ---
+    influxSender.send_sensor_data(
+        dht_temp, dht_hum, feels_like,
+        rain_chance, sun_score,
+        sitting, avg_score, total_reviews
+    )
+    
     time.sleep(2)
 
