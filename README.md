@@ -1,23 +1,23 @@
-# Lake Balaton Bench Logger
-*“Find the best benches to relax by the lake!”*
-![Lake Balaton Bench](assets/images/header.png)
-
+<div align="center">
+<img src="assets/images/readme-title.png" alt="Lake Balaton Bench Logger" width="250">
+</div>
 
 ## Table of Content
-- [Author](#author)
-- [Project Overview](#project-overview)
-- [Estimated Time](#estimated-time)
-- [Project Objective](#project-objective)
-- [Bill of Material](#bill-of-material)
-- [Raspberry Pi Pico W setup](#raspberry-pi-pico-w-setup)
-- [Wiring](#wiring)
-- [Environmental Comfort Calculation](#environmental-comfort-calculation)
-- [Transmitting Data](#transmitting-data)
-- [Data Storage and Visualization](#data-storage-and-visualization)
-- [The Code](#the-code)
-- [Development Phases](#development-phases)
-- [Useful Links](#useful-links)
+[Author](#author)  
+[Project Overview](#project-overview)  
+[Estimated Time](#estimated-time)
+[Project Objective](#project-objective)  
+[Bill of Material](#bill-of-material)  
+[Raspberry Pi Pico W setup](#raspberry-pi-pico-w-setup)  
+[Wiring](#wiring)  
+[Environmental Comfort Calculation](#environmental-comfort-calculation)  
+[Transmitting Data](#transmitting-data)  
+[Data Storage and Visualization](#data-storage-and-visualization)  
+[The Code](#the-code)  
+[Development Phases](#development-phases)  
+[Useful Links](#useful-links)
 
+![Lake Balaton Bench](assets/images/header.png)
 
 ## Author
 Made by Hanna Szalai (hs223xt)
