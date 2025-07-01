@@ -57,21 +57,21 @@ Think of it as TripAdvisor for benches.
 
 
 ## Bill of Material
-| Image | Component | Price (SEK) | Purpose |
-|----------|---------|
-| <img src="https://www.electrokit.com/cache/ba/700x700-product_41019_41019114_PICO-WH-HERO.jpg" alt="Raspberry Pi Pico W" width="100"> | Raspberry Pi Pico WH | [Function] |
-| Breadboard | [Function] |
-| USB cable | [Function] |
-| Lab cable M/M, F/M | [Type used] |
-| Digital temperature and humidity sensor DHT11 | [Optional] |
-| TLV49645 SIP-3 Hall effect sensor digital | [Optional] |
-| MCP9700 TO-92 Temperature sensor | [Optional] |
-| Photoresistor CdS 4-7 kohm | [Optional] |
-| LEDs | [Optional] |
-| Carbon film resistors | [Optional] |
-| Magnet Neo35 Ø5mm x 5mm | [Optional] |
-| Tactile switch PCB 6x6x5mm black | [Optional] |
-
+| Image | Component | Price (SEK) | Purpose |Add commentMore actions
+|-------|-----------|-------------|---------|
+| <img src="https://www.electrokit.com/cache/ba/700x700-product_41019_41019114_PICO-WH-HERO.jpg" alt="Raspberry Pi Pico W" width="100"> | Raspberry Pi Pico WH | 99 SEK | Main microcontroller with WiFi |
+| ![alt text](assets/images/image.png) | Breadboard | 69 SEK | Prototyping platform |
+| ![alt text](assets/images/image-1.png) | USB cable | 49 SEK | Power and programming |
+| ![alt text](assets/images/image-2.png) | Lab cable M/M, F/M | 49 SEK | Connections between components |
+| ![alt text](assets/images/image-3.png) | Digital temperature and humidity sensor DHT11 | 49 SEK | Environmental sensing |
+| ![alt text](assets/images/image-4.png) | TLV49645 SIP-3 Hall effect sensor digital | 12,5 SEK | Magnetic field detection |
+| ![alt text](assets/images/image-5.png) | MCP9700 TO-92 Temperature sensor | 11,5 SEK | Temperature monitoring |
+| ![alt text](assets/images/image-6.png) | Photoresistor CdS 4-7 kohm | 9 SEK | Light level detection |
+| ![alt text](assets/images/image-7.png) | LEDs | 15 SEK | Status indicators |
+| ![alt text](assets/images/image-9.png) | Carbon film resistors | 25 SEK | Current limiting |
+| ![alt text](assets/images/image-10.png) | Magnet Neo35 Ø5mm x 5mm | 11 SEK | Hall sensor trigger |
+| ![alt text](assets/images/image-11.png) | Tactile switch PCB 6x6x5mm black | 1,25 SEK | User input button |
+= total price = ... SEK
 
 ## Raspberry Pi Pico W setup
 - Plug it into your computer while pressing the reboot button, then copy the .UF2 file into the pico.  
@@ -91,20 +91,102 @@ Think of it as TripAdvisor for benches.
 TODO: fritzing diagram
 
 
-## Environmental Comfort Calculation  
-Describe how environmental readings are interpreted.  
-Include any calculations or logic used, for example:
+## Calculations
 
-- Real-feel calculation (temp + humidity)  + code snippets TODO:
-- Rain detection pattern  
-- Thresholds or categories used (e.g., Cold, Pleasant, Hot)
+### ⚠ Disclaimer
+This is an approximation. Do not rely solely on these calculations if you want to replicate this project.  
+Always verify all connections, resistor values, and current ratings yourself to ensure safety and proper functioning.
 
-1. Simple real-feel formula:
-``` python
-comfort = temperature + 0.2 * humidity
+
+| Component                        | Operating Voltage | Current (approx) | Resistor Needed | Remarks                           |
+|-----------------------------------|-------------------|------------------|-----------------|-----------------------------------|
+| Raspberry Pi Pico W               | 3.3V               | ~50 mA idle      | -               | Powers everything, connects via WiFi |
+| DHT11 Temp+Humidity Sensor        | 3.3V               | ~2.5 mA          | -               | On `GP17` (Pin 22) |
+| MCP9700 Analog Temp Sensor        | 3.3V               | <1 mA            | -               | On `ADC2` (GP28) |
+| CdS Photoresistor (light sensor)  | 3.3V               | <1 mA            | Voltage divider | On `ADC0` (GP26) & `ADC1` (GP27) |
+| Hall Effect Sensor                | 3.3V               | ~4 mA            | -               | On `GP16` (Pin 21), detects sitting |
+| 3x Status LEDs (green/yellow/red) | 3.3V               | ~20 mA each      | ~220Ω each      | On `GP8`, `GP9`, `GP10` |
+| 2x Bench LEDs                     | 3.3V               | ~20 mA each      | ~220Ω each      | On `GP6`, `GP7` |
+| 5x Rating Buttons                 | -                  | - (pulled up)    | -               | On `GP11-15`, uses internal pull-up |
+| WiFi Module (built-in)            | 3.3V               | ~50-120 mA active| -               | For MQTT/HTTP uploads |
+
+**Total Estimated Current:**  
+≈ 50 mA (Pico) + sensors + LEDs + WiFi peaks ≈ 150-180 mA max
+
+
+### Environmental Comfort Calculation  
+The device uses several calculations to interpret environmental readings:
+
+#### 1. ADC to Voltage Conversion
+```python
+def read_voltage(adc):
+    return adc.read_u16() * VREF / ADC_RES
+
+# Constants:
+VREF = 3.3        # ADC reference voltage
+ADC_RES = 65535   # 16-bit ADC resolution
 ```
 
+#### 2. MCP9700 Temperature Sensor Reading
+```python
+def read_mcp9700_temp():
+    voltage = read_voltage(adc_mcp)
+    return round((voltage - MCP9700_V0) / MCP9700_TCOEFF, 1)
 
+# Constants:
+MCP9700_V0 = 0.5      # 500mV at 0°C
+MCP9700_TCOEFF = 0.01 # 10mV per °C
+```
+
+#### 3. Heat Index "Feels-Like" Calculation (Rothfusz Regression)
+```python
+def compute_heat_index(temp_c, humidity):
+    # Convert to Fahrenheit
+    T = temp_c * 9 / 5 + 32
+    R = humidity
+
+    # Heat index formula
+    HI = -42.379 + 2.04901523*T + 10.14333127*R \
+         - 0.22475541*T*R - 0.00683783*T*T \
+         - 0.05481717*R*R + 0.00122874*T*T*R \
+         + 0.00085282*T*R*R - 0.00000199*T*T*R*R
+
+    # Convert back to Celsius
+    return round((HI - 32) * 5 / 9, 1)
+```
+
+#### 4. Sun/Shade Detection
+```python
+sun_voltage = read_voltage(adc_sun)
+shade_voltage = read_voltage(adc_shade)
+sun_score = round(sun_voltage - shade_voltage, 2)
+
+# Classification:
+if sun_score < 0.2:
+    status = "Mostly shaded"
+elif sun_score < 0.6:
+    status = "Partial sun"
+else:
+    status = "Full sun exposure"
+```
+
+#### 5. Rain Chance Estimation
+```python
+rain_chance = "Low"
+if dht_hum > 90:
+    if last_dht_temp is not None and dht_temp < last_dht_temp:
+        rain_chance = "High"
+    elif last_dht_temp is None:
+        rain_chance = "Unknown"
+```
+
+#### 6. User Rating Average
+```python
+# When button pressed (1-5 stars):
+total_reviews += 1
+total_score += stars
+avg_score = round(total_score / total_reviews, 2)
+```
 
 ## Transmitting Data
 Explain how data moves through the system:
