@@ -1,3 +1,6 @@
+/* -------------------------------
+   Global styles & background
+---------------------------------*/
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
@@ -8,10 +11,21 @@ body {
   min-height: 100vh;
 }
 
+/* Background gradient animation */
 @keyframes gradientBG {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* -------------------------------
+   Header & image
+---------------------------------*/
+h1 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2.2em;
+  color: #333;
+  margin-bottom: 15px;
 }
 
 .bench-image {
@@ -21,19 +35,9 @@ body {
   filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
 }
 
-.bench-image {
-  width: 200px;
-  height: auto;
-  margin: 10px auto;
-}
-
-h1 {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 2.2em;
-  color: #333;
-  margin-bottom: 15px;
-}
-
+/* -------------------------------
+   Status cards
+---------------------------------*/
 .status-cards {
   display: flex;
   justify-content: center;
@@ -58,12 +62,7 @@ h1 {
   background: rgba(255, 255, 255, 0.8);
 }
 
-#reviewStatus {
-  font-size: 1.3em;
-  color: black;
-}
-
-
+/* Bench-specific card colors */
 .bench-taken {
   background: rgba(255, 0, 0, 0.256);
   border-color: rgba(255, 0, 0, 0.319);
@@ -74,6 +73,15 @@ h1 {
   border-color: rgba(0, 128, 0, 0.3);
 }
 
+/* Review card */
+#reviewStatus {
+  font-size: 1.3em;
+  color: black;
+}
+
+/* -------------------------------
+   Charts
+---------------------------------*/
 .charts {
   display: flex;
   justify-content: center;
