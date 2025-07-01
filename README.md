@@ -17,7 +17,9 @@
 [Development Phases](#development-phases)  
 [Useful Links](#useful-links)
 
-![Lake Balaton Bench](assets/images/header.png)
+<div align="center">
+<img src="assets/images/header.png" alt="Lake Balaton Bench" width="400">
+</div>
 
 ## Author
 Made by Hanna Szalai (hs223xt)
@@ -33,10 +35,12 @@ A device was placed under one of Balaton’s most iconic benches to monitor:
 All this data flows into a colorful online dashboard, showing:
 - real-time comfort scores,
 - weather alerts,
-- and historical trends. 
+- and historical trends.  
 Think of it as TripAdvisor for benches.
 
-![Map](assets/images/map.png)
+<div align="center">
+<img src="assets/images/map.png" alt="Map" width="300">
+</div>
 
 
 ## Estimated Time
@@ -55,23 +59,23 @@ Think of it as TripAdvisor for benches.
 - Let people give their own ratings via buttons.
 - Display it all on a custom Flask web dashboard with real-time updates and Chart.js visualizations.
 
-
 ## Bill of Material
-| Image | Component | Price (SEK) | Purpose |Add commentMore actions
+| Image | Component | Price (SEK) | Purpose |
 |-------|-----------|-------------|---------|
 | <img src="https://www.electrokit.com/cache/ba/700x700-product_41019_41019114_PICO-WH-HERO.jpg" alt="Raspberry Pi Pico W" width="100"> | Raspberry Pi Pico WH | 99 SEK | Main microcontroller with WiFi |
-| ![alt text](assets/images/image.png) | Breadboard | 69 SEK | Prototyping platform |
-| ![alt text](assets/images/image-1.png) | USB cable | 49 SEK | Power and programming |
-| ![alt text](assets/images/image-2.png) | Lab cable M/M, F/M | 49 SEK | Connections between components |
-| ![alt text](assets/images/image-3.png) | Digital temperature and humidity sensor DHT11 | 49 SEK | Environmental sensing |
-| ![alt text](assets/images/image-4.png) | TLV49645 SIP-3 Hall effect sensor digital | 12,5 SEK | Magnetic field detection |
-| ![alt text](assets/images/image-5.png) | MCP9700 TO-92 Temperature sensor | 11,5 SEK | Temperature monitoring |
-| ![alt text](assets/images/image-6.png) | Photoresistor CdS 4-7 kohm | 9 SEK | Light level detection |
-| ![alt text](assets/images/image-7.png) | LEDs | 15 SEK | Status indicators |
-| ![alt text](assets/images/image-9.png) | Carbon film resistors | 25 SEK | Current limiting |
-| ![alt text](assets/images/image-10.png) | Magnet Neo35 Ø5mm x 5mm | 11 SEK | Hall sensor trigger |
-| ![alt text](assets/images/image-11.png) | Tactile switch PCB 6x6x5mm black | 1,25 SEK | User input button |
-= total price = ... SEK
+| <img src="https://www.electrokit.com/upload/product/10160/10160840/10160840.jpg" alt="Breadboard" width="100"> | Breadboard | 69 SEK | Prototyping platform |
+| <img src="https://www.electrokit.com/upload/quick/7e/12/871d_41016634.jpg" alt="USB cable" width="100"> | USB cable | 49 SEK | Power and programming |
+| <img src="https://techfun.hu/wp-content/uploads/2017/09/kabliky-20-cm-M-F.jpg" alt="Lab cable M/M, F/M" width="100"> | Lab cable M/M, F/M | 49 SEK | Connections between components |
+| <img src="https://www.electrokit.com/upload/product/41015/41015728/41015728.jpg" alt="DHT11 sensor" width="100"> | Digital temperature and humidity sensor DHT11 | 49 SEK | Environmental sensing |
+| <img src="https://www.electrokit.com/upload/product/41017/41017004/41013729.jpg" alt="Hall effect sensor" width="100"> | TLV49645 SIP-3 Hall effect sensor digital | 12,5 SEK | Magnetic field detection |
+| <img src="https://www.electrokit.com/upload/product/common/TO-92.jpg" alt="MCP9700 temperature sensor" width="100"> | MCP9700 TO-92 Temperature sensor | 11,5 SEK | Temperature monitoring |
+| <img src="https://cdn11.bigcommerce.com/s-yo2n39m6g3/images/stencil/1280x1280/products/704/4600/31U4JA_4gVL__53211.1600158986.jpg?c=2" alt="Photoresistor" width="100"> | Photoresistor CdS 4-7 kohm | 9 SEK | Light level detection |
+| <img src="https://www.arborsci.com/cdn/shop/products/red_green_blue_LEDs_1500x1000_ed3ff09f-4d16-4078-b543-09328397583a.jpg?v=1618408505" alt="LEDs" width="100"> | LEDs | 15 SEK | Status indicators |
+| <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYS5MRbPo3chgwaMeB4KWvihCI8anBmW69WA&s" alt="Carbon film resistors" width="100"> | Carbon film resistors | 25 SEK | Current limiting |
+| <img src="https://www.electrokit.com/upload/product/41011/41011480/41011480.jpg" alt="Neodymium magnet" width="100"> | Magnet Neo35 Ø5mm x 5mm | 11 SEK | Hall sensor trigger |
+| <img src="https://www.electrokit.com/upload/quick/33/77/2c0e_41001412-1.jpg" alt="Tactile switch" width="100"> | Tactile switch PCB 6x6x5mm black | 1,25 SEK | User input button |
+
+**Total price:** ~400 SEK
 
 ## Raspberry Pi Pico W setup
 - Plug it into your computer while pressing the reboot button, then copy the .UF2 file into the pico.  
