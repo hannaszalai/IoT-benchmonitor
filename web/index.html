@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lake Balaton Bench Logger</title>
+  <meta http-equiv="refresh" content="4">
+  <link rel="icon" type="image/png" href="/static/images/icon.png" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Lake Balaton Bench Logger</h1>
+  <img src="/static/images/bench.png" 
+       alt="Bench" 
+       class="bench-image" />
+
+  <div class="status-cards">
+    <div class="status-card" id="benchStatus">Bench: ...</div>
+    <div class="status-card" id="rainChance">Rain Chance: ...</div>
+    <div class="status-card" id="shadeStatus">Shade / Sun: ...</div>
+    <div class="status-card" id="reviewStatus">Comfort: ...</div>
+  </div>
+
+  <div class="charts">
+    <canvas id="tempChart"></canvas>
+    <canvas id="humidityChart"></canvas>
+    <canvas id="feelsChart"></canvas>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
