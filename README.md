@@ -2,7 +2,6 @@
 *“Find the best benches to relax by the lake!”*
 ![Lake Balaton Bench](assets/images/header.png)
 
----
 
 ## Table of Content
 - [Author](#author)
@@ -19,7 +18,6 @@
 - [Development Phases](#development-phases)
 - [Useful Links](#useful-links)
 
----
 
 ## Author
 Made by Hanna Szalai (hs223xt)
@@ -40,7 +38,6 @@ Think of it as TripAdvisor for benches.
 
 ![Map](assets/images/map.png)
 
----
 
 ## Estimated Time
 | Task | Time |
@@ -51,7 +48,6 @@ Think of it as TripAdvisor for benches.
 | Frontend + dashboard tweaks | 2 hours |
 | Testing & polishing | 1,5 hours |
 | **Total:** | **~10 hours** |
----
 
 ## Project Objective
 - Create a low-power, WiFi-connected device that monitors bench comfort.
@@ -59,7 +55,6 @@ Think of it as TripAdvisor for benches.
 - Let people give their own ratings via buttons.
 - Display it all on a custom Flask web dashboard with real-time updates and Chart.js visualizations.
 
----
 
 ## Bill of Material
 | Image | Component | Price (SEK) | Purpose |
@@ -77,7 +72,6 @@ Think of it as TripAdvisor for benches.
 | Magnet Neo35 Ø5mm x 5mm | [Optional] |
 | Tactile switch PCB 6x6x5mm black | [Optional] |
 
----
 
 ## Raspberry Pi Pico W setup
 - Plug it into your computer while pressing the reboot button, then copy the .UF2 file into the pico.  
@@ -92,12 +86,10 @@ Think of it as TripAdvisor for benches.
 ![MicroPico Extension](assets/images/micropico.png)
 
 
----
 
 ## Wiring
 TODO: fritzing diagram
 
----
 
 ## Environmental Comfort Calculation  
 Describe how environmental readings are interpreted.  
@@ -113,7 +105,6 @@ comfort = temperature + 0.2 * humidity
 ```
 
 
----
 
 ## Transmitting Data
 Explain how data moves through the system:
@@ -123,7 +114,6 @@ Explain how data moves through the system:
 - What triggers data transmission  
 - Optional automation (e.g., push notifications)
 
----
 
 ## Data Storage and Visualization  
 ### Storage  
@@ -135,7 +125,6 @@ Explain how data moves through the system:
     - Past 24h trends
     - Star ratings over time
 - Embedded in a simple static HTML page.
----
 
 # The Code
 
@@ -177,7 +166,7 @@ Outline the project in phases:
 ![alt text](assets/images/terminal-print.png)
 3. Phase 2 – Custom website with graphs and live data
 ![alt text](assets\images\frontend.png)
----
+
 
 ## 8. Useful Links  
 - GitHub repo: https://github.com/hannaszalai/IoT-benchmonitor  
