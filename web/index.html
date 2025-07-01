@@ -6,6 +6,8 @@
   <title>Lake Balaton Bench Logger</title>
   <link rel="icon" type="image/png" href="/static/images/icon.png" />
   <link rel="stylesheet" href="/static/styles.css" />
+  
+  <!-- Chart.js for graphs -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -14,6 +16,7 @@
        alt="Bench" 
        class="bench-image" />
 
+  <!-- Status overview cards -->
   <div class="status-cards">
     <div class="status-card" id="benchStatus">Bench: ...</div>
     <div class="status-card" id="rainChance">Rain Chance: ...</div>
@@ -21,12 +24,14 @@
     <div class="status-card" id="reviewStatus">Comfort: ...</div>
   </div>
 
+  <!-- Graphs section -->
   <div class="charts">
     <canvas id="tempChart"></canvas>
     <canvas id="humidityChart"></canvas>
     <canvas id="feelsChart"></canvas>
   </div>
 
+  <!-- Custom JS -->
   <script src="/static/script.js"></script>
 </body>
 </html>
