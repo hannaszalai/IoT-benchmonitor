@@ -3,19 +3,20 @@
 </div>
 
 ## Table of Content
-[Author](#author)  
-[Project Overview](#project-overview)  
-[Estimated Time](#estimated-time)
-[Project Objective](#project-objective)  
-[Bill of Material](#bill-of-material)  
-[Raspberry Pi Pico W setup](#raspberry-pi-pico-w-setup)  
-[Wiring](#wiring)  
-[Environmental Comfort Calculation](#environmental-comfort-calculation)  
-[Transmitting Data](#transmitting-data)  
-[Data Storage and Visualization](#data-storage-and-visualization)  
-[The Code](#the-code)  
-[Development Phases](#development-phases)  
-[Useful Links](#useful-links)
+- [Author](#author)  
+- [Project Overview](#project-overview)  
+- [Estimated Time](#estimated-time)
+- [Project Objective](#project-objective)  
+- [Bill of Material](#bill-of-material)  
+- [Raspberry Pi Pico W setup](#raspberry-pi-pico-w-setup)  
+- [Wiring](#wiring)  
+- [Calculations](#calculations)
+- [Environmental Comfort Calculation](#environmental-comfort-calculation)  
+- [Transmitting Data](#transmitting-data)  
+- [Data Storage and Visualization](#data-storage-and-visualization)  
+- [The Code](#the-code)  
+- [Development Phases](#development-phases)  
+- [Demo Video](#demo-video)
 
 <div align="center">
 <img src="assets/images/header.png" alt="Lake Balaton Bench" width="500">
@@ -58,28 +59,24 @@ Think of it as TripAdvisor for benches.
 </div>
 
 ## Project Objective
-- Create a low-power, WiFi-connected device that monitors bench comfort.
-- Store & visualize the data using InfluxDB + Grafana in Docker.
-- Let people give their own ratings via buttons.
-- Display it all on a custom Flask web dashboard with real-time updates and Chart.js visualizations.
+Build a low-power, WiFi-based device to monitor bench comfort and user ratings, save data in InfluxDB, and display it live on a custom Flask + Chart.js dashboard.
 
 ## Bill of Material
-| Image | Component | Price (SEK) | Purpose |
-|-------|-----------|-------------|---------|
-| <img src="https://www.electrokit.com/cache/ba/700x700-product_41019_41019114_PICO-WH-HERO.jpg" alt="Raspberry Pi Pico W" width="100"> | Raspberry Pi Pico WH | 99 SEK | Main microcontroller with WiFi |
-| <img src="https://www.electrokit.com/upload/product/10160/10160840/10160840.jpg" alt="Breadboard" width="100"> | Breadboard | 69 SEK | Prototyping platform |
-| <img src="https://vilros.com/cdn/shop/products/Micro-USB-Cable_ab6b931f-d217-4399-b7f9-0b37495ee98a.jpg?v=1615916114" alt="USB cable" width="100"> | USB cable | 49 SEK | Power and programming |
-| <img src="https://techfun.hu/wp-content/uploads/2017/09/kabliky-20-cm-M-F.jpg" alt="Lab cable M/M, F/M" width="100"> | Lab cable M/M, F/M | 49 SEK | Connections between components |
-| <img src="https://www.electrokit.com/upload/product/41015/41015728/41015728.jpg" alt="DHT11 sensor" width="100"> | Digital temperature and humidity sensor DHT11 | 49 SEK | Environmental sensing |
-| <img src="https://www.electrokit.com/upload/product/41017/41017004/41013729.jpg" alt="Hall effect sensor" width="100"> | TLV49645 SIP-3 Hall effect sensor digital | 12,5 SEK | Magnetic field detection |
-| <img src="https://www.electrokit.com/upload/product/common/TO-92.jpg" alt="MCP9700 temperature sensor" width="100"> | MCP9700 TO-92 Temperature sensor | 11,5 SEK | Temperature monitoring |
-| <img src="https://cdn11.bigcommerce.com/s-yo2n39m6g3/images/stencil/1280x1280/products/704/4600/31U4JA_4gVL__53211.1600158986.jpg?c=2" alt="Photoresistor" width="100"> | Photoresistor CdS 4-7 kohm | 9 SEK | Light level detection |
-| <img src="https://www.arborsci.com/cdn/shop/products/red_green_blue_LEDs_1500x1000_ed3ff09f-4d16-4078-b543-09328397583a.jpg?v=1618408505" alt="LEDs" width="100"> | LEDs | 15 SEK | Status indicators |
-| <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYS5MRbPo3chgwaMeB4KWvihCI8anBmW69WA&s" alt="Carbon film resistors" width="100"> | Carbon film resistors | 25 SEK | Current limiting |
-| <img src="https://www.electrokit.com/upload/product/41011/41011480/41011480.jpg" alt="Neodymium magnet" width="100"> | Magnet Neo35 Ø5mm x 5mm | 11 SEK | Hall sensor trigger |
-| <img src="https://www.electrokit.com/upload/quick/33/77/2c0e_41001412-1.jpg" alt="Tactile switch" width="100"> | Tactile switch PCB 6x6x5mm black | 1,25 SEK | User input button |
-
-**Total price:** ~400 SEK
+| Image | Component | Price (SEK) | Source | Purpose |
+|-------|-----------|-------------|--------|---------|
+| <img src="https://www.electrokit.com/cache/ba/700x700-product_41019_41019114_PICO-WH-HERO.jpg" alt="Raspberry Pi Pico W" width="100"> | Raspberry Pi Pico WH | 99 SEK | Electrokit | Main microcontroller with WiFi |
+| <img src="https://www.electrokit.com/upload/product/10160/10160840/10160840.jpg" alt="Breadboard" width="100"> | Breadboard | 69 SEK | Electrokit | Prototyping platform |
+| <img src="https://vilros.com/cdn/shop/products/Micro-USB-Cable_ab6b931f-d217-4399-b7f9-0b37495ee98a.jpg?v=1615916114" alt="USB cable" width="100"> | USB cable | 49 SEK | Electrokit | Power and programming |
+| <img src="https://techfun.hu/wp-content/uploads/2017/09/kabliky-20-cm-M-F.jpg" alt="Lab cable M/M, F/M" width="100"> | Lab cable M/M, F/M | 49 SEK | Electrokit | Connections between components |
+| <img src="https://www.electrokit.com/upload/product/41015/41015728/41015728.jpg" alt="DHT11 sensor" width="100"> | Digital temperature and humidity sensor DHT11 | 49 SEK | Electrokit | Environmental sensing |
+| <img src="https://www.electrokit.com/upload/product/41017/41017004/41013729.jpg" alt="Hall effect sensor" width="100"> | TLV49645 SIP-3 Hall effect sensor digital | 12,5 SEK | Electrokit | Magnetic field detection |
+| <img src="https://www.electrokit.com/upload/product/common/TO-92.jpg" alt="MCP9700 temperature sensor" width="100"> | MCP9700 TO-92 Temperature sensor | 11,5 SEK | Electrokit | Temperature monitoring |
+| <img src="https://cdn11.bigcommerce.com/s-yo2n39m6g3/images/stencil/1280x1280/products/704/4600/31U4JA_4gVL__53211.1600158986.jpg?c=2" alt="Photoresistor" width="100"> | Photoresistor CdS 4-7 kohm | 9 SEK | Electrokit | Light level detection |
+| <img src="https://www.arborsci.com/cdn/shop/products/red_green_blue_LEDs_1500x1000_ed3ff09f-4d16-4078-b543-09328397583a.jpg?v=1618408505" alt="LEDs" width="100"> | LEDs | 15 SEK | Electrokit | Status indicators |
+| <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYS5MRbPo3chgwaMeB4KWvihCI8anBmW69WA&s" alt="Carbon film resistors" width="100"> | Carbon film resistors | 25 SEK | Electrokit | Current limiting |
+| <img src="https://www.electrokit.com/upload/product/41011/41011480/41011480.jpg" alt="Neodymium magnet" width="100"> | Magnet Neo35 Ø5mm x 5mm | 11 SEK | Electrokit | Hall sensor trigger |
+| <img src="https://www.electrokit.com/upload/quick/33/77/2c0e_41001412-1.jpg" alt="Tactile switch" width="100"> | Tactile switch PCB 6x6x5mm black | 1,25 SEK | Electrokit | User input button |
+| | **TOTAL** | **~400 SEK** | | |
 
 ## Raspberry Pi Pico W setup
 - Plug it into your computer while pressing the reboot button, then copy the .UF2 file into the pico.  
@@ -123,7 +120,7 @@ Always verify all connections, resistor values, and current ratings yourself to 
 
 
 ### Environmental Comfort Calculation  
-The device uses several calculations to interpret environmental readings:
+The device uses several calculations to interpret environmental readings in `main.py`:
 
 #### 1. ADC to Voltage Conversion
 ```python
@@ -203,8 +200,8 @@ avg_score = round(total_score / total_reviews, 2)
 ``` python
 bench_data dht_temp=25.6,dht_hum=48,feels_like=26.9,rain=0,sun_score=0.3,sitting=1,avg_score=4.2,total_reviews=5
 ```
-- Data is sent directly to the InfluxDB HTTP API running in Docker on your local network.
-- From there, it’s queried by your Flask server and visualized live in the browser with Chart.js.
+- Data is sent directly to the InfluxDB HTTP API running in Docker on the local network.
+- From there, it’s queried by the Flask server and visualized live in the browser with Chart.js.
 - LoRa or MQTT weren’t needed since the benches stay close to local WiFi, and I didn't have additional hardware to support anything besides WiFi.
 
 ## Data Storage and Visualization  
@@ -213,9 +210,80 @@ bench_data dht_temp=25.6,dht_hum=48,feels_like=26.9,rain=0,sun_score=0.3,sitting
 - Influx was chosen for time-series data, and the Pico automates everything by pushing readings in a loop.
 
 ### Visualization  
-- The dashboard is a simple HTML page with Chart.js that updates every 2 seconds from Flask+InfluxDB.
+- The dashboard is a simple HTML + CSS page with Chart.js that updates every 2 seconds from Flask + InfluxDB.
 
 ## The Code
+
+The project consists of three main components: MicroPython firmware for the Pico W, a Flask web server, and Docker services for data storage and visualization. (TIG)
+
+#### `main.py` - Main Sensor Loop
+The heart of the IoT device, running continuously on the Pico W:
+- **Sensor Reading**: Polls DHT11, MCP9700, photoresistors, hall sensor, and buttons every 2 seconds
+- **Data Processing**: Applies environmental calculations (heat index, sun/shade detection, rain estimation)
+- **LED Control**: Updates status LEDs based on sensor readings and user interactions
+- **Data Transmission**: Sends all collected data to InfluxDB via WiFi
+
+Key features:
+- Non-blocking button detection with debouncing
+- Real-time comfort scoring based on multiple sensors
+- Automatic WiFi reconnection handling
+- Error handling for sensor failures
+
+#### `wifiConnection.py` - WiFi Management
+Handles network connectivity:
+- Connects to specified WiFi network with credentials
+- Returns assigned IP address for debugging
+- Implements retry logic for connection failures
+- Manages power-saving WiFi modes
+
+#### `influxSender.py` - Data Transmission
+Manages communication with the database:
+- Formats sensor data into InfluxDB line protocol
+- Sends HTTP POST requests to InfluxDB API
+- Handles authentication with API tokens
+- Provides error feedback for failed transmissions
+
+### Flask Web Application
+
+#### `server.py` - Backend Server
+Python Flask server that bridges the database and frontend:
+- **Data Retrieval**: Queries InfluxDB for latest sensor readings and historical data
+- **API Endpoints**: Provides JSON data for the frontend to consume
+- **Real-time Updates**: Serves fresh data every 2 seconds to match Pico transmission rate
+- **Static File Serving**: Hosts the HTML dashboard and assets
+
+#### `index.html` - Dashboard Frontend
+Single-page application displaying real-time bench data:
+- **Live Status Cards**: Shows current temperature, humidity, occupancy, and ratings
+- **Interactive Charts**: Real-time graphs using Chart.js for trends over time
+- **Responsive Design**: Works on desktop and mobile devices
+- **Auto-refresh**: Updates every 2 seconds without page reload
+
+#### `static/script.js` - Frontend Logic
+JavaScript handling the dynamic behavior:
+- Fetches data from Flask API endpoints
+- Updates Chart.js graphs with new data points
+- Manages real-time status card updates
+- Handles error states and connection issues
+
+#### `static/styles.css` - Dashboard Styling
+Modern CSS styling for the dashboard:
+- Clean, responsive layout using CSS Grid and Flexbox
+- Color-coded status indicators for different comfort levels
+- Smooth animations for data updates
+- Mobile-first responsive design
+
+### Infrastructure & Data Storage
+
+#### `docker-compose.yml` - Service Orchestration
+Defines the complete data stack:
+- **InfluxDB**: Time-series database for sensor data storage
+
+Benefits of this architecture:
+- **Scalable**: Easy to add more Pico devices or sensors
+- **Reliable**: Database persistence and automatic restarts
+- **Portable**: Entire stack runs anywhere Docker is available
+
 ### File Structure
 ```
 IoT-benchmonitor/
@@ -224,16 +292,16 @@ IoT-benchmonitor/
 ├── docker-compose.yml          # Docker services (InfluxDB + Grafana)
 │
 ├── micropython/                # Raspberry Pi Pico W code
-│   ├── main.py                # Main sensor loop
-│   ├── wifiConnection.py      # WiFi connection helper
-│   └── influxSender.py        # Data transmission to InfluxDB
+│   ├── main.py                # Main sensor loop (150+ lines)
+│   ├── wifiConnection.py      # WiFi connection helper (30 lines)
+│   └── influxSender.py        # Data transmission to InfluxDB (40 lines)
 │
 ├── web/                       # Flask web application
-│   ├── server.py              # Flask backend server
-│   ├── index.html             # Main dashboard page
+│   ├── server.py              # Flask backend server (80 lines)
+│   ├── index.html             # Main dashboard page (120 lines)
 │   └── static/
-│       ├── styles.css         # Dashboard styling
-│       ├── script.js          # Frontend JavaScript + Chart.js
+│       ├── styles.css         # Dashboard styling (200+ lines)
+│       ├── script.js          # Frontend JavaScript + Chart.js (100 lines)
 │       └── images/
 │           ├── bench.png      # Bench image
 │           └── icon.png       # Favicon
@@ -247,12 +315,20 @@ IoT-benchmonitor/
         └── ...               # Other documentation images
 ```
 
+### Data Flow Architecture
+1. **Collection**: Pico W reads sensors every 2 seconds
+2. **Processing**: Environmental calculations applied locally
+3. **Transmission**: Data sent via WiFi to InfluxDB HTTP API
+4. **Storage**: Time-series data stored with timestamps
+5. **Visualization**: Flask server queries database and serves to web dashboard
+6. **Display**: Chart.js renders real-time graphs and status updates
+
 ### Development Phases  
 Outline the project in phases:
 
-1. Phase 1 – Terminal output (basic testing)  
+1. Phase – Terminal output (basic testing)  
 ![alt text](assets/images/terminal-print.png)
-3. Phase 2 – Custom website with graphs and live data
+3. Phase – Custom website with graphs and live data
 ![alt text](assets/images/frontend.png)
 
 
