@@ -44,6 +44,8 @@ Think of it as TripAdvisor for benches.
 
 
 ## Estimated Time
+<div align="center">
+
 | Task | Time |
 |------|------|
 | Hardware prototyping | 1,5 hours |
@@ -52,6 +54,8 @@ Think of it as TripAdvisor for benches.
 | Frontend + dashboard tweaks | 2 hours |
 | Testing & polishing | 1,5 hours |
 | **Total:** | **~10 hours** |
+
+</div>
 
 ## Project Objective
 - Create a low-power, WiFi-connected device that monitors bench comfort.
@@ -64,7 +68,7 @@ Think of it as TripAdvisor for benches.
 |-------|-----------|-------------|---------|
 | <img src="https://www.electrokit.com/cache/ba/700x700-product_41019_41019114_PICO-WH-HERO.jpg" alt="Raspberry Pi Pico W" width="100"> | Raspberry Pi Pico WH | 99 SEK | Main microcontroller with WiFi |
 | <img src="https://www.electrokit.com/upload/product/10160/10160840/10160840.jpg" alt="Breadboard" width="100"> | Breadboard | 69 SEK | Prototyping platform |
-| <img src="https://www.electrokit.com/upload/quick/7e/12/871d_41016634.jpg" alt="USB cable" width="100"> | USB cable | 49 SEK | Power and programming |
+| <img src="https://vilros.com/cdn/shop/products/Micro-USB-Cable_ab6b931f-d217-4399-b7f9-0b37495ee98a.jpg?v=1615916114" alt="USB cable" width="100"> | USB cable | 49 SEK | Power and programming |
 | <img src="https://techfun.hu/wp-content/uploads/2017/09/kabliky-20-cm-M-F.jpg" alt="Lab cable M/M, F/M" width="100"> | Lab cable M/M, F/M | 49 SEK | Connections between components |
 | <img src="https://www.electrokit.com/upload/product/41015/41015728/41015728.jpg" alt="DHT11 sensor" width="100"> | Digital temperature and humidity sensor DHT11 | 49 SEK | Environmental sensing |
 | <img src="https://www.electrokit.com/upload/product/41017/41017004/41013729.jpg" alt="Hall effect sensor" width="100"> | TLV49645 SIP-3 Hall effect sensor digital | 12,5 SEK | Magnetic field detection |
