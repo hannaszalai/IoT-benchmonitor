@@ -1,17 +1,22 @@
 let previousBenchState = null;
-const charts = {};  // stores chart instances by canvas ID
+const charts = {};  // stores Chart.js instances by canvas ID
 
-
+/**
+ * Fetch data from the Flask API.
+ */
 async function fetchData() {
   const response = await fetch('/data');
   return await response.json();
 }
 
+/**
+ * Draw or update a line chart (temperature, humidity, feels-like).
+ */
 function drawChart(id, label, data, color) {
   const ctx = document.getElementById(id).getContext('2d');
 
   if (!charts[id]) {
-    // Create once
+    // Create the chart the first time
     charts[id] = new Chart(ctx, {
       type: 'line',
       data: {
@@ -44,56 +49,24 @@ function drawChart(id, label, data, color) {
       }
     });
   } else {
-    // Update data in place
+    // Update existing chart in place
     charts[id].data.labels = data.map(p => new Date(p.time).toLocaleTimeString());
     charts[id].data.datasets[0].data = data.map(p => p.value);
     charts[id].update();
   }
 }
 
-let sunStateChartInstance;
-
-function drawSunStateChart(sunData) {
-  const threshold = 0.5;
-  const labels = sunData.map(p => new Date(p.time).toLocaleTimeString());
-  const values = sunData.map(p => (p.value >= threshold ? 1 : 0));
-  const ctx = document.getElementById('sunStateChart').getContext('2d');
-
-  // Destroy previous instance if it exists
-  if (sunStateChartInstance) {
-    sunStateChartInstance.destroy();
-  }
-
-  sunStateChartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Sun Exposure (1=sun, 0=shade)',
-        data: values,
-        backgroundColor: values.map(v => v ? 'gold' : 'gray')
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          ticks: { stepSize: 1 },
-          beginAtZero: true,
-          max: 1
-        }
-      }
-    }
-  });
-}
-
-
+/**
+ * Main UI update function, runs every 2 seconds.
+ */
 async function render() {
   const { temp, hum, feels, sun, rain, sitting, avg_scores, total_reviews } = await fetchData();
+  
   drawChart('tempChart', 'Temperature (°C)', temp, 'red');
   drawChart('humidityChart', 'Humidity (%)', hum, 'blue');
   drawChart('feelsChart', 'Feels Like (°C)', feels, 'orange');
 
+  // Ensure consistent normalized values
   const latestSit = sitting.length > 0 ? sitting.at(-1).value : 0;
   const latestSitState = (latestSit === 1 || latestSit === true) ? 1 : 0;
   const latestRain = rain.at(-1)?.value;
@@ -101,10 +74,8 @@ async function render() {
   const latestAvgScore = avg_scores.length > 0 ? avg_scores.at(-1).value : null;
   const latestTotalReviews = total_reviews.length > 0 ? total_reviews.at(-1).value : 0;
 
+  // Update bench status
   const benchCard = document.getElementById('benchStatus');
-  const reviewStatus = document.getElementById('reviewStatus');
-
-
   if (latestSit === 1) {
     benchCard.textContent = 'Bench is taken';
     benchCard.classList.add('bench-taken');
@@ -115,13 +86,14 @@ async function render() {
     benchCard.classList.remove('bench-taken');
   }
 
+  // Reload the whole page if bench state changed
   if (previousBenchState !== null && previousBenchState !== latestSitState) {
       console.log("Bench state changed! Reloading page...");
       location.reload();
   }
   previousBenchState = latestSitState;
 
-
+  // Update other cards
   document.getElementById('rainChance').textContent = 
     latestRain === 1 ? 'Rain chance is high – bring an umbrella!' : 'Rain chance is low';
 
@@ -130,6 +102,8 @@ async function render() {
     latestSun > 0.2 ? 'Partial sunny' :
                       'Mostly shaded';
   
+  
+  const reviewStatus = document.getElementById('reviewStatus');
   if (latestTotalReviews > 0) {
     reviewStatus.textContent = `Average comfort: ⭐ ${latestAvgScore} (from ${latestTotalReviews} reviews)`;
   } else {
@@ -137,5 +111,6 @@ async function render() {
   }
 }
 
+// Start fetching & updating UI every 2 seconds
 render();
 setInterval(render, 2000);
