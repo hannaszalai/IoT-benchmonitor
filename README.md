@@ -78,11 +78,16 @@ Build a low-power, WiFi-based device to monitor bench comfort and user ratings, 
 | <img src="https://www.electrokit.com/upload/quick/33/77/2c0e_41001412-1.jpg" alt="Tactile switch" width="100"> | Tactile switch PCB 6x6x5mm black | 1,25 SEK | Electrokit | User input button |
 | | **TOTAL** | **~400 SEK** | | |
 
-## Raspberry Pi Pico W setup TODO: tutorial
-- Plug it into your computer while pressing the reboot button, then copy the .UF2 file into the pico.  
+## Tutorial how to set the project up
+- Clone this repository
+- Plug the Raspberry Pi Pico WH into your computer while pressing the reboot button, then copy the .UF2 file into the pico.  
   More information here: https://micropython.org/download/RPI_PICO_W/
 - Download VS Code, follow the tutorial here: https://code.visualstudio.com/download
-- Then install the Python extension:
+
+- Download Docker Desktop, follow the tutorial here: https://docs.docker.com/get-started/introduction/get-docker-desktop/  
+Make sure it's running properly.
+
+- Install the Python extension in VS Code:
 
 ![Python Extension](assets/images/python.png)
 
@@ -90,6 +95,18 @@ Build a low-power, WiFi-based device to monitor bench comfort and user ratings, 
 
 ![MicroPico Extension](assets/images/micropico.png)
 
+- Unplug the Pico, then plug in again, CTRL + SHIFT + P -> MicroPico: Connect.  
+Stand in main.py and on the status bar click **Run**:  
+<img src="assets/images/terminal_tut.png" alt="Pico" width="200">
+
+- Open a new terminal, and write this command, now the server is running
+```bash
+python server.py
+```
+- Then open this URL in your browser and you're done :)
+``` bash
+http://127.0.0.1:5000
+```
 
 
 ## Wiring
@@ -197,7 +214,7 @@ total_score += stars
 avg_score = round(total_score / total_reviews, 2)
 ```
 
-## Transmitting Data TODO: activity diagram
+## Transmitting Data
 - The Raspberry Pi Pico W reads all sensors and user inputs, then transmits data **every 2 seconds** over WiFi (2.4 GHz) to a local InfluxDB server.
 - It uses the built-in HTTP POST (via urequests), sending data in InfluxDB’s line protocol format like:
 
@@ -293,30 +310,29 @@ Benefits of this architecture:
 IoT-benchmonitor/
 ├── README.md
 ├── LICENSE
-├── docker-compose.yml          # Docker services (InfluxDB + Grafana)
+├── docker-compose.yml          # Docker services
 │
-├── micropython/                # Raspberry Pi Pico W code
-│   ├── main.py                # Main sensor loop (150+ lines)
-│   ├── wifiConnection.py      # WiFi connection helper (30 lines)
-│   └── influxSender.py        # Data transmission to InfluxDB (40 lines)
+├── micropython/             
+│   ├── main.py                # Main sensor loop
+│   ├── wifiConnection.py      # WiFi connection helper
+│   └── influxSender.py        # Data transmission to InfluxDB
 │
-├── web/                       # Flask web application
-│   ├── server.py              # Flask backend server (80 lines)
-│   ├── index.html             # Main dashboard page (120 lines)
+├── web/                      
+│   ├── server.py              # Flask backend server
+│   ├── index.html             # Main dashboard page
 │   └── static/
-│       ├── styles.css         # Dashboard styling (200+ lines)
-│       ├── script.js          # Frontend JavaScript + Chart.js (100 lines)
+│       ├── styles.css         # Dashboard styling
+│       ├── script.js          # Frontend JavaScript + Chart.js
 │       └── images/
-│           ├── bench.png      # Bench image
-│           └── icon.png       # Favicon
+│           ├── bench.png
+│           └── icon.png
 │
 └── assets/                    # Documentation images
     └── images/
-        ├── header.png         # README header image
-        ├── map.png           # Project location map
-        ├── micropico.png     # VS Code extension screenshot
-        ├── python.png        # Python extension screenshot
-        └── ...               # Other documentation images
+        ├── header.png
+        ├── map.png
+        ├── micropico.png
+        └── ...
 ```
 
 ### Data Flow Architecture
