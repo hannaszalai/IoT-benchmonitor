@@ -8,7 +8,7 @@
 - [Estimated Time](#estimated-time)
 - [Project Objective](#project-objective)  
 - [Bill of Material](#bill-of-material)  
-- [Raspberry Pi Pico W setup](#raspberry-pi-pico-w-setup)  
+- [Setup and Installation Guide](#setup-and-installation-guide)  
 - [Wiring](#wiring)  
 - [Calculations](#calculations)
 - [Environmental Comfort Calculation](#environmental-comfort-calculation)  
@@ -32,7 +32,7 @@ A device was placed under one of Balaton’s most iconic benches to monitor:
 - when people sit down,
 - how warm and humid it is,
 - how bright the sun is,
-- plus it lets people vote with a 1–5 star button.
+- plus it lets people vote with a 1–5 star button.  
 All this data flows into a colorful online dashboard, showing:
 - real-time comfort scores,
 - weather alerts,
@@ -52,8 +52,8 @@ Think of it as TripAdvisor for benches.
 | Hardware prototyping | 1,5 hours |
 | MicroPython firmware | 2 hours |
 | Docker (TIG stack) setup | 3 hours |
-| Frontend + dashboard tweaks | 2 hours |
-| Testing & polishing | 1,5 hours |
+| Frontend + dashboard | 2 hours |
+| Testing | 1,5 hours |
 | **Total:** | **~10 hours** |
 
 </div>
@@ -171,7 +171,7 @@ Always verify all connections, resistor values, and current ratings yourself to 
 | 3x Status LEDs (green/yellow/red) | 3.3V               | ~20 mA each      | ~220Ω each      | On `GP8`, `GP9`, `GP10` |
 | 2x Bench LEDs                     | 3.3V               | ~20 mA each      | ~220Ω each      | On `GP6`, `GP7` |
 | 5x Rating Buttons                 | -                  | - (pulled up)    | -               | On `GP11-15`, uses internal pull-up |
-| WiFi Module (built-in)            | 3.3V               | ~50-120 mA active| -               | For MQTT/HTTP uploads |
+| WiFi Module (built-in)            | 3.3V               | ~50-120 mA active| -               | For HTTP uploads |
 
 **Total Estimated Current:**  
 ≈ 50 mA (Pico) + sensors + LEDs + WiFi peaks ≈ 150-180 mA max
@@ -371,14 +371,6 @@ IoT-benchmonitor/
         ├── micropico.png
         └── ...
 ```
-
-### Data Flow Architecture
-1. **Collection**: Pico W reads sensors every 2 seconds
-2. **Processing**: Environmental calculations applied locally
-3. **Transmission**: Data sent via WiFi to InfluxDB HTTP API
-4. **Storage**: Time-series data stored with timestamps
-5. **Visualization**: Flask server queries database and serves to web dashboard
-6. **Display**: Chart.js renders real-time graphs and status updates
 
 ### Development Phases  
 Outline the project in phases:
