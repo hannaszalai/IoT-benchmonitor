@@ -262,6 +262,8 @@ bench_data dht_temp=25.6,dht_hum=48,feels_like=26.9,rain=0,sun_score=0.3,sitting
 - From there, it’s queried by the Flask server and visualized live in the browser with Chart.js.
 - LoRa or MQTT weren’t needed since the benches stay close to local WiFi, and I didn't have additional hardware to support anything besides WiFi.
 
+I chose WiFi mainly for its simplicity, immediate availability, and because it’s built into the Pico W. This allowed using standard HTTP requests without extra modules. However, WiFi draws more power (~120 mA during uploads) and is best for nearby infrastructure with constant power. If the project needed to work kilometers away or run on batteries for weeks, a LoRa solution would be better for their much lower current consumption and extended range, but with more complex gateways and slower data rates. For this bench logger, WiFi provided an easier solution.
+
 ## Data Storage and Visualization  
 ### Storage  
 - Data is saved in InfluxDB on each send (every 2s) and kept for full history.
