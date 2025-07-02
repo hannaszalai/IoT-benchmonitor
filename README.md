@@ -26,7 +26,7 @@
 Made by Hanna Szalai (hs223xt)
 
 ## Project Overview  
-Each summer, thousands of people circle Lake Balaton by bike or foot, seeking the **perfect bench to relax on**. But what makes a bench perfect? Is it the view, the temperature, the breeze, or the warm sunshine on your shoulders?  
+Each summer, thousands of people circle Lake Balaton by bike or foot, searching for the **perfect bench to relax on**. But what makes a bench perfect? Is it the view, the temperature, the breeze, or the warm sunshine on your shoulders?  
 This small IoT project tries to figure that out.  
 A device was placed under one of Balaton’s most iconic benches to monitor:
 - when people sit down,
@@ -78,35 +78,72 @@ Build a low-power, WiFi-based device to monitor bench comfort and user ratings, 
 | <img src="https://www.electrokit.com/upload/quick/33/77/2c0e_41001412-1.jpg" alt="Tactile switch" width="100"> | Tactile switch PCB 6x6x5mm black | 1,25 SEK | Electrokit | User input button |
 | | **TOTAL** | **~400 SEK** | | |
 
-## Tutorial how to set the project up
-- Clone this repository
-- Plug the Raspberry Pi Pico WH into your computer while pressing the reboot button, then copy the .UF2 file into the pico.  
-  More information here: https://micropython.org/download/RPI_PICO_W/
-- Download VS Code, follow the tutorial here: https://code.visualstudio.com/download
-
-- Download Docker Desktop, follow the tutorial here: https://docs.docker.com/get-started/introduction/get-docker-desktop/  
-Make sure it's running properly.
-
-- Install the Python extension in VS Code:
-
-![Python Extension](assets/images/python.png)
-
-- And install the MicroPico extension to run the pico files:
-
-![MicroPico Extension](assets/images/micropico.png)
-
-- Unplug the Pico, then plug in again, CTRL + SHIFT + P -> MicroPico: Connect.  
-Stand in main.py and on the status bar click **Run**:  
-<img src="assets/images/terminal_tut.png" alt="Pico" width="200">
-
-- Open a new terminal, and write this command, now the server is running
+## Setup and Installation Guide
+### Step 1: Clone the repository
 ```bash
+git clone https://github.com/hannaszalai/IoT-benchmonitor.git
+```
+
+### Step 2: Raspberry Pi Pico W Configuration
+
+#### Install MicroPython Firmware
+1. Download the latest MicroPython firmware for Pico W from the [official repository](https://micropython.org/download/RPI_PICO_W/)
+2. Hold the **BOOTSEL** button while connecting the Pico W to your computer via USB
+3. The Pico W will appear as a removable drive (RPI-RP2)
+4. Copy the downloaded `.uf2` file to the drive
+5. The device will automatically reboot with MicroPython installed
+
+#### Configure Development Environment
+Install these VS Code extensions:
+
+**Python Extension:**
+<div align="center">
+<img src="assets/images/python.png" alt="Python Extension" width="400">
+</div>
+
+**MicroPico Extension:**
+<div align="center">
+<img src="assets/images/micropico.png" alt="MicroPico Extension" width="400">
+</div>
+
+#### Connect and Deploy Code
+1. Disconnect and reconnect the Pico W
+2. Open VS Code in the project directory
+3. Press `Ctrl + Shift + P`
+4. Select **"MicroPico: Connect"**
+5. Navigate to `micropython/main.py`
+6. Click **"Run"** in the status bar to deploy the code
+
+<div align="center">
+<img src="assets/images/terminal_tut.png" alt="MicroPico Run Command" width="300">
+</div>
+
+### Step 3: Infrastructure Setup
+
+#### Install Docker Desktop
+Download Docker Desktop from the [official website](https://docs.docker.com/get-started/introduction/get-docker-desktop/)
+
+#### Deploy Database Services
+Start the InfluxDB container in the background:
+```bash
+docker-compose up -d
+```
+
+### Step 4: Web Setup
+
+#### Start the Flask Server
+```bash
+cd web
 python server.py
 ```
-- Then open this URL in your browser and you're done :)
-``` bash
+
+### Step 5: Access the Dashboard
+Open your web browser and navigate to:
+```
 http://127.0.0.1:5000
 ```
+
+You should see the real-time bench monitoring dashboard with live sensor data.
 
 
 ## Wiring
