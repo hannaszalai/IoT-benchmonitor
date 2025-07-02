@@ -78,7 +78,7 @@ Build a low-power, WiFi-based device to monitor bench comfort and user ratings, 
 | <img src="https://www.electrokit.com/upload/quick/33/77/2c0e_41001412-1.jpg" alt="Tactile switch" width="100"> | Tactile switch PCB 6x6x5mm black | 1,25 SEK | Electrokit | User input button |
 | | **TOTAL** | **~400 SEK** | | |
 
-## Raspberry Pi Pico W setup
+## Raspberry Pi Pico W setup TODO: tutorial
 - Plug it into your computer while pressing the reboot button, then copy the .UF2 file into the pico.  
   More information here: https://micropython.org/download/RPI_PICO_W/
 - Download VS Code, follow the tutorial here: https://code.visualstudio.com/download
@@ -93,7 +93,11 @@ Build a low-power, WiFi-based device to monitor bench comfort and user ratings, 
 
 
 ## Wiring
-TODO: fritzing diagram
+<div align="center">
+<img src="https://www.raspberrypi.com/documentation/microcontrollers/images/picow-pinout.svg" alt="Pico" width="300">
+<img src="assets/images/fritzing.png" alt="Pico" width="500">
+</div>
+
 
 
 ## Calculations
