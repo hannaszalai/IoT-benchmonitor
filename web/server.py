@@ -32,14 +32,20 @@ def index():
 
 @app.route("/data")
 def get_data():
-    # Flux query to get the last 10 minutes of bench data
     query = f'''
     from(bucket: "{INFLUX_BUCKET}")
     |> range(start: -10m)
     |> filter(fn: (r) => r._measurement == "bench_data")
-    |> filter(fn: (r) => r._field == "dht_temp" or r._field == "dht_hum" or r._field == "sun_score" or 
-                            r._field == "feels_like" or r._field == "rain_chance" or r._field == "sitting" or 
-                            r._field == "avg_score" or r._field == "total_reviews")
+    |> filter(fn: (r) =>
+        r._field == "temperature" or 
+        r._field == "humidity" or 
+        r._field == "feels_like" or 
+        r._field == "rain_chance" or 
+        r._field == "sun_score" or 
+        r._field == "sitting" or 
+        r._field == "avg_rating" or 
+        r._field == "total_reviews"
+    )
     |> keep(columns: ["_time", "_field", "_value"])
     '''
 
@@ -57,22 +63,22 @@ def get_data():
             v = record.get_value()
             f = record.get_field()
 
-            if f == "dht_temp":
-                temp.append({ "time": t, "value": v })
-            elif f == "dht_hum":
-                hum.append({ "time": t, "value": v })
-            elif f == "sun_score":
-                sun.append({ "time": t, "value": v })
+            if f == "temperature":
+                temp.append({"time": t, "value": v})
+            elif f == "humidity":
+                hum.append({"time": t, "value": v})
             elif f == "feels_like":
-                feels.append({ "time": t, "value": v })
-            elif f == "rain":
-                rain.append({ "time": t, "value": v })
+                feels.append({"time": t, "value": v})
+            elif f == "rain_chance":
+                rain.append({"time": t, "value": v})
+            elif f == "sun_score":
+                sun.append({"time": t, "value": v})
             elif f == "sitting":
-                sitting.append({ "time": t, "value": v })
-            elif f == "avg_score":
-                avg_scores.append({ "time": t, "value": v })
+                sitting.append({"time": t, "value": v})
+            elif f == "avg_rating":
+                avg_scores.append({"time": t, "value": v})
             elif f == "total_reviews":
-                total_reviews.append({ "time": t, "value": v })
+                total_reviews.append({"time": t, "value": v})
 
     # Return everything as a single JSON object
     return jsonify({

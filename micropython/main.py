@@ -4,11 +4,9 @@ import time
 import influxSender
 import wifiConnection
 
-
 # ------------------------------------------------------
 # WiFi connection
 # ------------------------------------------------------
-
 wifi_ip = wifiConnection.connect()
 print("Pico IP:", wifi_ip)
 
@@ -190,5 +188,5 @@ while True:
         sitting, avg_score, total_reviews
     )
     
-    time.sleep(2)
+    time.sleep(3)
 
