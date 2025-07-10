@@ -16,7 +16,6 @@
 - [Data Storage and Visualization](#data-storage-and-visualization)  
 - [The Code](#the-code)  
 - [Development Phases](#development-phases)  
-- [Demo Video](#demo-video)
 
 <div align="center">
 <img src="assets/images/header.png" alt="Lake Balaton Bench" width="500">
@@ -381,7 +380,3 @@ Outline the project in phases:
 ![alt text](assets/images/terminal-print.png)
 3. Phase – Custom website with graphs and live data
 ![alt text](assets/images/frontend.png)
-
-
-## Demo Video 
-TODO: youtube video here
